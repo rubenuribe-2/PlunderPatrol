@@ -1,0 +1,27 @@
+{
+  "name": "plunderpatrol",
+  "version": "1.0.0",
+  "description": "The goal of this project is to be able to access a computers webcam from a remote device. \r It can be used to have some peace of mind if you must leave your belongings in a public place for a short period of time\r such as a restroom break.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rubenuribe-2/PlunderPatrol.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rubenuribe-2/PlunderPatrol/issues"
+  },
+  "homepage": "https://github.com/rubenuribe-2/PlunderPatrol#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "jquery": "^3.4.1",
+    "mongoose": "^5.6.0"
+  }
+}
