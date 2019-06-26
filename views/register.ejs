@@ -1,0 +1,31 @@
+<%- include('partials/header')%>
+<link href="css/register.css" rel="stylesheet">
+<!-- Users will be redirected here to register-->
+<section class="registersec">
+     <form class="form-signin" action="/register" name="registerForm" method="post" onsubmit="return validateForm()">
+        <img class="mb-4" src="img/whale.png" alt="whale logo" width="100" height="100">
+        <h1 class="h3 mb-3 font-weight-normal">Welcome Aboard!!</h1>
+
+
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input name="email"type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+
+        <label for="retypePassword" class="sr-only">Confirm Password</label>
+        <input name="password2" type="password" id="retypePassword" class="form-control" placeholder="Retype Password" required>
+
+        <h6 id="error" class="text-error"></h6>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>
+</section>
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.min.js"
+			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			  crossorigin="anonymous"></script>
+<script src="js/validate.js"></script>
+  
+<%- include('partials/footer')%>

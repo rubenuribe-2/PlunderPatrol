@@ -2,5 +2,15 @@
 
 <!-- This page will display a qr code to view the webcam stream -->
 
+<script src="js\socket.io-client\dist\socket.io.js"></script>
+<script>
+      var socket = io();
+  socket.on('connect', function () {
+    socket.send('hi');
 
+    socket.on('message', function (msg) {
+      // my msg
+    });
+  });
+</script>
 <%- include('partials/footer')%>
