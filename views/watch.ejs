@@ -2,5 +2,39 @@
 
 <!-- This is the page for the mobile device-->
 
+<video width="" height="" autoplay>
+</video>
+<img id="play">
+<div id="logger"></div>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="js\socket.io-client\dist\socket.io.js"></script>
+<script src="js\socket.io-stream.js"></script>
+<script>
+    var getId="<%=id%>";
+    console.log(getId);
+    var socket = io('/'+getId);
+    socket.on('connect', function () {
+        console.log("in connect");
+
+        socket.emit('watching',socket.id);
+
+        socket.on('stream',function(image){
+            console.log("streaming");
+            $('#play').attr('src',image);
+        });
+
+        socket.on('message', function (msg) {
+            console.log("in");
+        });
+    });
+    
+    // socket.on('video',function(obj){
+    //     console.log("ben");
+    //     console.log(obj);
+    //     video.srcObject = obj.video;
+    // });
+
+    //video.srcObject = stream;
+</script>
 
 <%- include('partials/footer')%>
