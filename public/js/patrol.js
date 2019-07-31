@@ -1,19 +1,20 @@
+var pcConfig = {
+    'iceServers': [{
+      'urls': 'stun:numb.viagenie.ca'
+    }]
+  };
+  
+  // Set up audio and video regardless of what devices are present.
+  var sdpConstraints = {
+    offerToReceiveAudio: true,
+    offerToReceiveVideo: true
+  };
 
-
-var canvas = document.getElementById("preview");
-var context = canvas.getContext('2d');
-
-canvas.width = 900;
-canvas.height = 700;
-
-context.width = canvas.width;
-context.height = canvas.height;
-
-function logger(msg){
+function logger(msg){//log to the browser
     $('#logger').text(msg);
 }
 
-function loadCamera(stream){
+function loadCamera(stream){//attatch camera to the video element in patrol.ejs
     try {
         video.srcObject = stream;
         } catch (error) {
@@ -22,7 +23,7 @@ function loadCamera(stream){
      logger("Camera connected");
   }
 
-  function loadFail(){
+  function loadFail(){//log that camera failed to connect
     logger("Camera not connected");
 }
 
@@ -30,7 +31,7 @@ function loadCamera(stream){
 var video = document.getElementById("video");
 
 
-  function hasGetUserMedia() {
+  function hasGetUserMedia() {//check that browser & computer support webcam connection
     return !!(navigator.mediaDevices &&
       navigator.mediaDevices.getUserMedia);
   }
@@ -43,7 +44,7 @@ var video = document.getElementById("video");
       };
       
       const video = document.querySelector('video');
-      var password=1234;
+      var password=1234;//later on beef up password sequrity
       navigator.mediaDevices.getUserMedia(constraints).
         then((stream) => {
             const videoObj={
@@ -58,30 +59,10 @@ var video = document.getElementById("video");
 
             var socket = io('/'+id);
 
-            function viewVideo(video,context){
-                context.drawImage(video,0,0,context.width,context.height);
-                socket.emit('stream',canvas.toDataURL('image/webp'));
-            }
-
+            //exchange auth stuff with watch browser
 
             socket.on('connect', function () {
                 console.log("in connect");
-                socket.emit('patrol',socket.id);
-                
-                socket.on('watching',function(){
-                    $(function(){
-                        navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia );
-                    
-                        if(navigator.getUserMedia){
-                            navigator.getUserMedia({video: true, audio: false},loadCamera,loadFail);
-                        }
-                 
-                        setInterval(function(){
-                            viewVideo(video,context);
-                        },1);
-                    });
-                    console.log("emmiting video");
-                });
                 socket.on('message', function (msg) {
 
                 });
@@ -89,18 +70,9 @@ var video = document.getElementById("video");
                     console.log("disconnected from server");
                 });
             });
-            // socket.on('watching',function(){
-            //     socket.send('video',{vid: videoObj});
-            //     console.log("emmiting video");
-            // });
-            // socket.on('connection',function(){
-            //     console.log("watching");
-            //     socket.emit('video',{vid: videoObj});
-            // });
-            
-
         });
   } else {
       //browser is outdated
     alert('getUserMedia() is not supported by your browser');
+    //redirect to a page saying browser is outdated
   }
