@@ -59,8 +59,7 @@ var video = document.getElementById("video");
             var socket = io('/'+id);
 
             function viewVideo(video,context){
-                context.drawImage(video,0,0,context.width,context.height);
-                socket.emit('stream',canvas.toDataURL('image/webp'));
+                socket.emit('stream',stream);
             }
 
 
@@ -78,7 +77,7 @@ var video = document.getElementById("video");
                  
                         setInterval(function(){
                             viewVideo(video,context);
-                        },1);
+                        },.1);
                     });
                     console.log("emmiting video");
                 });
