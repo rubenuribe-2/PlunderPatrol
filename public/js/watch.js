@@ -5,4 +5,7 @@ socket.on('connect', function () {
     socket.on('message', function (msg) {
         console.log("in");
     });
+    socket.on('candidate',function(candidate){
+        //handle reciving ice candidates
+    })
 });

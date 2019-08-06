@@ -1,8 +1,10 @@
-var pcConfig = {
-    'iceServers': [{
-      'urls': 'stun:numb.viagenie.ca'
-    }]
-  };
+var isChannelReady = false;
+var isInitiator = false;
+var isStarted = false;
+var localStream;
+var pc;
+var remoteStream;
+var turnReady;
   
   // Set up audio and video regardless of what devices are present.
   var sdpConstraints = {
@@ -63,6 +65,9 @@ var video = document.getElementById("video");
 
             socket.on('connect', function () {
                 console.log("in connect");
+                socket.on('answer',function (answer){
+                  //handle answer from watch
+                })
                 socket.on('message', function (msg) {
 
                 });
@@ -75,4 +80,81 @@ var video = document.getElementById("video");
       //browser is outdated
     alert('getUserMedia() is not supported by your browser');
     //redirect to a page saying browser is outdated
+  }
+
+
+
+
+
+//   /////////  //////  ////////    //////// functions
+
+function createPeerConnection() {
+    try {
+      const pc = new RTCPeerConnection(pcConfig);
+      pc.onicecandidate = handleIceCandidate;
+      pc.onaddstream = handleRemoteStreamAdded;
+      pc.onremovestream = handleRemoteStreamRemoved;
+      console.log('Created RTCPeerConnnection');
+    } catch (e) {
+      console.log('Failed to create PeerConnection, exception: ' + e.message);
+      alert('Cannot create RTCPeerConnection object.');
+      return;
+    }
+  }
+  
+  function handleIceCandidate(event) {
+    console.log('icecandidate event: ', event);
+    if (event.candidate) {
+      sendMessage({
+        type: 'candidate',
+        label: event.candidate.sdpMLineIndex,
+        id: event.candidate.sdpMid,
+        candidate: event.candidate.candidate
+      });
+    } else {
+      console.log('End of candidates.');
+    }
+  }
+  
+  function handleCreateOfferError(event) {
+    console.log('createOffer() error: ', event);
+  }
+  
+  function doCall() {
+    console.log('Sending offer to peer');
+    pc.createOffer(setLocalAndSendMessage, handleCreateOfferError);
+  }
+  
+  function doAnswer() {
+    console.log('Sending answer to peer.');
+    pc.createAnswer().then(
+      setLocalAndSendMessage,
+      onCreateSessionDescriptionError
+    );
+  }
+  
+  function setLocalAndSendMessage(sessionDescription) {
+    pc.setLocalDescription(sessionDescription);
+    console.log('setLocalAndSendMessage sending message', sessionDescription);
+    sendMessage(sessionDescription);
+  }
+  
+  function onCreateSessionDescriptionError(error) {
+    trace('Failed to create session description: ' + error.toString());
+  }
+  
+  
+  function handleRemoteStreamAdded(event) {
+    console.log('Remote stream added.');
+    remoteStream = event.stream;
+    remoteVideo.srcObject = remoteStream;
+  }
+  
+  function handleRemoteStreamRemoved(event) {
+    console.log('Remote stream removed. Event: ', event);
+  }
+  function stop() {
+    isStarted = false;
+    pc.close();
+    pc = null;
   }

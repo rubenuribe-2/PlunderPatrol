@@ -11,6 +11,20 @@
     id="<%=id%>"
 </script>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script>
+    var pcConfig = { 
+        iceServers: [{
+                        urls: "turn:numb.viagenie.ca",
+                        username: "<%=username%>",
+                        credential: "<%=password%>"
+                    },{
+                        urls:"stun:numb.viagenie.ca"
+                    }]
+};
+</script>
+
+
+
 <script src="js/patrol.js"></script>
 
 <%- include('partials/footer')%>

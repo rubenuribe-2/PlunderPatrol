@@ -105,7 +105,7 @@ app.get('/patrol',function(req,res){
     }
     const auth=true;
     if(auth){
-        res.render('patrol',{id: Id});
+        res.render('patrol',{id: Id,username=process.env.TURN_USERNAME,password=process.env.TURN_PASSWORD});
 
         patrol=io
         .of('/'+Id)
