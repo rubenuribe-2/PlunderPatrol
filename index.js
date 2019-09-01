@@ -88,12 +88,13 @@ app.post('/login',function(req,res){//login post route
 });
 // Patrol ----------------------------------------------------
 
-app.get('/patrol',function(req,res){
+app.get('/patrol',function(req,res){//patrol route handle connection and video streaming
     var socketId={
         patrolId: null,
         watchId: null
     };
     madeID=false
+    const Id=makeid(8);
     while(!madeID){//makes unique Id
         const Id=makeid(8);
         if(vallidID.indexOf(Id)=== -1){
@@ -105,7 +106,7 @@ app.get('/patrol',function(req,res){
     }
     const auth=true;
     if(auth){
-        res.render('patrol',{id: Id,username=process.env.TURN_USERNAME,password=process.env.TURN_PASSWORD});
+        res.render('patrol',{id: Id,username:process.env.TURN_USERNAME,password:process.env.TURN_PASSWORD});
 
         patrol=io
         .of('/'+Id)
@@ -132,6 +133,9 @@ app.get('/patrol',function(req,res){
                 console.log("patrolID "+socketId.patrolId);
                 
             });
+            socket.on('candidate',function(candidate){
+                socket.to(socketId.watchId).emit('candidate',candidate);
+            });
             socket.on('watching',function(watchId){
                 console.log('watch connected to socket');
                 console.log(watchId);
@@ -140,11 +144,24 @@ app.get('/patrol',function(req,res){
                 socket.to(socketId.patrolId).emit('watching');
                 console.log("emited");
             });
+            socket.on('offer',function(offer){
+                console.log("recived offer from patrol");
+                //add password to database or something else that is secure
+                console.log("offer.sdp: ", offer.sdp);
+                socket.to(socketId.watchId).emit('offer',offer);
+            });
+            socket.on('answer',function(answer){
+                console.log('recived answer from watch');
+                socket.to(socketId.patrolId).emit('answer',answer);
+            });
+            socket.on('success',function(){
+                socket.to(socketId.watchId).emit('success');
+            });
             socket.on('message', function () { });
 
 
             socket.on('disconnect', function () {
-                vallidID.remove(vallidID.indexOf(Id));
+                vallidID.splice(vallidID.indexOf(Id),1);
              });            
         });
 
@@ -156,7 +173,7 @@ app.get('/patrol',function(req,res){
 app.get('/watch:videoId',function(req,res){
     const videoId=req.params.videoId;
     
-    res.render('watch',{id:videoId});
+    res.render('watch',{id:videoId,username:process.env.TURN_USERNAME,password:process.env.TURN_PASSWORD});
 });
 
 
@@ -165,16 +182,6 @@ app.get('/watch:videoId',function(req,res){
 app.get('/guest', function(req,res){//guest route
     res.render('guest');
 });
-
-
-
-
-// io.on('connection', function (socket) {
-//     console.log("connected");
-//     socket.on('videoStream',function(obj){
-//         console.log('id' + obj);
-//     });
-//   });
   
 
 http.listen(3000, function(err){
@@ -185,7 +192,7 @@ http.listen(3000, function(err){
     }
 });
 
-function makeid(length) {
+function makeid(length) {//handle making a unique ID for all of the clients
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;

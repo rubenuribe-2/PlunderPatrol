@@ -1,14 +1,32 @@
 <%- include('partials/header')%>
-
+<link href="css/patrol.css" rel="stylesheet">
 <!-- This page will display a qr code to view the webcam stream -->
-<video autoplay></video>
-<h1>Visit http://localhost:3000/watch<%= id %></h1>
-<div id="logger"></div>
+
+<div class="video-div">
+    <video autoplay id='video'></video>
+    <div id="qr-code">
+        
+    </div>
+    <a href="http://localhost:3000/watch<%= id %>" target="_blank">Click to view feed</a>
+</div>
+
+
+
+
 
 <script src="js\socket.io-client\dist\socket.io.js"></script>
 <script src="js\socket.io-stream.js"></script>
+<script src="js\qrcode.js"></script>
 <script>
     id="<%=id%>"
+    var qrcode = new QRCode("qr-code", {
+    text: "http://localhost:3000/watch<%= id %>",
+    width: 128,
+    height: 128,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
 </script>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script>

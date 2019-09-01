@@ -2,10 +2,13 @@
 
 <!-- This is the page for the mobile device-->
 
-<video width="" height="" autoplay>
+<video autoplay id="remote-video">
 </video>
-<img id="play">
-<div id="logger"></div>
+<button type="" id="watch-button">Watch</button>
+
+
+
+
 <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="js\socket.io-client\dist\socket.io.js"></script>
 <script src="js\socket.io-stream.js"></script>
@@ -14,6 +17,15 @@
     var getId="<%=id%>";
     console.log(getId);
     var socket = io('/'+getId);
+    var pcConfig = { 
+        iceServers: [{
+                        urls: "turn:numb.viagenie.ca",
+                        username: "<%=username%>",
+                        credential: "<%=password%>"
+                    },{
+                        urls:"stun:numb.viagenie.ca"
+                    }]
+};
 </script>
 <script src="js/watch.js"></script>
 
