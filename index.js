@@ -33,33 +33,33 @@ app.use(function(req, res, next) {
     next();
   });
 
-mongoose.connect("mongodb://localhost:27017/plunderPatrolVideoDB", {useNewUrlParser: true});
-mongoose.connect("mongodb://localhost:27017/plunderPatrolUserDB", {useNewUrlParser: true});
-mongoose.set('useCreateIndex', true);
+// mongoose.connect("mongodb://localhost:27017/plunderPatrolVideoDB", {useNewUrlParser: true});
+// mongoose.connect("mongodb://localhost:27017/plunderPatrolUserDB", {useNewUrlParser: true});
+// mongoose.set('useCreateIndex', true);
 
 
 
-const userSchema = new mongoose.Schema({
-    email: String,
-    password: String,
-    googleId: String,
-    secret: String
-});
-const videoSchema = new mongoose.Schema({
-    code: String,
-    password: String
-});
+// const userSchema = new mongoose.Schema({
+//     email: String,
+//     password: String,
+//     googleId: String,
+//     secret: String
+// });
+// const videoSchema = new mongoose.Schema({
+//     code: String,
+//     password: String
+// });
 
 
 
-videoSchema.plugin(passportLocalMongoose);
-videoSchema.plugin(findOrCreate);
-const Video = new mongoose.model("video", videoSchema)
+// videoSchema.plugin(passportLocalMongoose);
+// videoSchema.plugin(findOrCreate);
+// const Video = new mongoose.model("video", videoSchema)
 
 
-userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate)
-const User = new mongoose.model("User", userSchema);
+// userSchema.plugin(passportLocalMongoose);
+// userSchema.plugin(findOrCreate)
+// const User = new mongoose.model("User", userSchema);
 
 
 app.get('/', function(req,res){//home route
