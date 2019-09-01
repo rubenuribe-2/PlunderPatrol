@@ -184,11 +184,11 @@ app.get('/guest', function(req,res){//guest route
 });
   
 
-http.listen(3000, function(err){
+http.listen(process.env.PORT || 3000, function(err){
     if(err){
         console.log(err);
     } else {
-        console.log("Server Started on port 3000");
+        console.log("Server Started");
     }
 });
 
