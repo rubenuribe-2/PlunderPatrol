@@ -88,7 +88,7 @@ app.post('/login',function(req,res){//login post route
 });
 // Patrol ----------------------------------------------------
 
-app.get('/patrol',function(req,res){
+app.get('/patrol',function(req,res){//patrol route handle connection and video streaming
     var socketId={
         patrolId: null,
         watchId: null
@@ -182,16 +182,6 @@ app.get('/watch:videoId',function(req,res){
 app.get('/guest', function(req,res){//guest route
     res.render('guest');
 });
-
-
-
-
-// io.on('connection', function (socket) {
-//     console.log("connected");
-//     socket.on('videoStream',function(obj){
-//         console.log('id' + obj);
-//     });
-//   });
   
 
 http.listen(3000, function(err){
@@ -202,7 +192,7 @@ http.listen(3000, function(err){
     }
 });
 
-function makeid(length) {
+function makeid(length) {//handle making a unique ID for all of the clients
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
