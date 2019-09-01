@@ -1,6 +1,9 @@
 *{
     color: #f8f8f8;
 }
+h1{
+    font-size: 5em;
+}
 /* body{
     margin-bottom: 50px;
 } */
@@ -15,13 +18,13 @@
 .second{
     background:#eaeaea;
     width:100%;
-    min-height: 500px;
-    height:70vh;
+    height:auto;
     
 }
 .in-second{
     width: 25%;
     height: 90%;
+    flex:.5;
     background: #ebebeb;
     border-radius: 2ch;
     box-shadow: 5px 10px 10px #a9bdbc;
@@ -29,6 +32,11 @@
     flex-direction: column; */
     align-items: center;
     color: #ff00cc;
+    min-height: 300px;
+    margin: 2% 2%;
+    margin-top: 2%;
+    /* margin-bottom: 10%; */
+    text-align: center;
 }
 .icon{
     width:100px;
@@ -38,17 +46,26 @@
     color: #333399;
     margin: 10px;
 }
-.numbers{
+.circle{
+    width: 110px;
+    height:110px;
     background: #dfdfdf;
-    box-shadow: 3px 5px 10px #a9bdbc;
-    display:block;
-    position: relative;
-    top:-10%;
     border-radius:50%;
+    margin: auto;
+    position: relative;
+    top:-55px;
+    align-content: center;
+    box-shadow: 3px 5px 10px #a9bdbc;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.icon{
+    
+    display:block;
     width:auto;
-    height:25%;
-    margin-left:auto;
-    margin-right: auto;
+    height:60%;
+    margin:auto;
 }
 .home-buttons{
     display: flex;
@@ -117,7 +134,24 @@
     flex-direction: row;
     align-items: center;
 }
+@media screen and (max-width:1000px){
+    
+    .desk-pic{
+        display: none;
+    }
+    .desk{
+        display: none;
+    }
+}
 
+@media screen and (max-width:800px){
+    .background-img-2{
+        flex-direction: column;
+    } 
+    .in-second{
+        width:80%;
+    }
+}
 
 .footer{
     bottom: 0;
