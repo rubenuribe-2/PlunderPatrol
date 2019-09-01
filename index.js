@@ -11,11 +11,7 @@ const findOrCreate = require('mongoose-find-or-create');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-var ss = require('socket.io-stream');
-var socketId={
-    patrolId: null,
-    watchId: null
-};
+var vallidID = [];
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -93,49 +89,64 @@ app.post('/login',function(req,res){//login post route
 // Patrol ----------------------------------------------------
 
 app.get('/patrol',function(req,res){
-    const Id=makeid(8);
+    var socketId={
+        patrolId: null,
+        watchId: null
+    };
+    madeID=false
+    while(!madeID){//makes unique Id
+        const Id=makeid(8);
+        if(vallidID.indexOf(Id)=== -1){
+            vallidID.push(Id);
+            madeID=true;
+        } else {
+            Id=makeid(8);
+        }
+    }
     const auth=true;
     if(auth){
-        res.render('patrol',{id: Id});
+        res.render('patrol',{id: Id,username=process.env.TURN_USERNAME,password=process.env.TURN_PASSWORD});
 
         patrol=io
         .of('/'+Id)
         .on('connection', function(socket){
             
             console.log("connected to " + Id);
+
+            //convenience function to log server messages
+            function log(){
+                var array = ["Message from server:"];
+                array.push.apply(array,arguments);
+                socket.emit('log', array);
+            }
+
+            socket.on('message', function(message){
+                log('client said: ', message);
+                socket.emit('message', message);
+            });
+
             socket.on('patrol',function(patrolId){
-                console.log("patrol");
+                console.log("patrol connected to socket");
                 console.log(patrolId);
                 socketId.patrolId=patrolId;
                 console.log("patrolID "+socketId.patrolId);
                 
             });
             socket.on('watching',function(watchId){
-                console.log('watch');
+                console.log('watch connected to socket');
                 console.log(watchId);
                 socketId.watchId=watchId;
                 console.log("patrolID "+socketId.patrolId);
                 socket.to(socketId.patrolId).emit('watching');
                 console.log("emited");
             });
-            socket.on('stream',function(image){
-                socket.to(socketId.watchId).emit('stream',image);  
-            });
             socket.on('message', function () { });
 
 
-            socket.on('disconnect', function () { });            
+            socket.on('disconnect', function () {
+                vallidID.remove(vallidID.indexOf(Id));
+             });            
         });
-
-        //watch=io
-        // .of('/watch'+Id)
-        // .on('connection', function(socket){
-        //     socket.on('video',function(vid){
-        //         socket.emit('videoSend',vid);
-        //     });
-            
-        //     console.log("connected to watch "+ Id);
-        // });
 
     } else{
         res.redirect(login);

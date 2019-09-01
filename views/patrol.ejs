@@ -3,14 +3,28 @@
 <!-- This page will display a qr code to view the webcam stream -->
 <video autoplay></video>
 <h1>Visit http://localhost:3000/watch<%= id %></h1>
-<canvas style="display:none;" id="preview"></canvas>
-        <div id="logger"></div>
+<div id="logger"></div>
 
 <script src="js\socket.io-client\dist\socket.io.js"></script>
 <script src="js\socket.io-stream.js"></script>
 <script>
     id="<%=id%>"
 </script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script>
+    var pcConfig = { 
+        iceServers: [{
+                        urls: "turn:numb.viagenie.ca",
+                        username: "<%=username%>",
+                        credential: "<%=password%>"
+                    },{
+                        urls:"stun:numb.viagenie.ca"
+                    }]
+};
+</script>
+
+
+
 <script src="js/patrol.js"></script>
 
 <%- include('partials/footer')%>
