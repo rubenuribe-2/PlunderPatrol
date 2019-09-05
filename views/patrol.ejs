@@ -4,12 +4,19 @@
 <div class="patrolsec">
 <div class="video-div">
     <video autoplay id='video'></video>
-    <h1><%= id %></h1>
-    <div id="qr-code">
-        
-    </div>
-    <a href="https://plunderpatroll.herokuapp.com/watch<%= id %>" target="_blank">Click to view feed</a>
 </div>
+<div class="options">
+    <div>
+    <h6>Patrol ID:</h6>
+    <h1><%= id %></h1>
+    </div>  
+    <div id="qr-code">
+    </div>
+    <!-- <a href="https://plunderpatroll.herokuapp.com/register<%= id %>" target="_blank">Click to view feed</a> -->
+    <a href="http://localhost:3000/register<%= id %>" target="_blank">Click to view feed</a>
+</div>
+
+
 
 </div>
 
