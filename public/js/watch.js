@@ -4,6 +4,7 @@ const videoElement=document.getElementById("remote-video");
 var remoteVideo = new MediaStream();
 
 button.addEventListener('click',function(){//listen for button click
+    button.style.display='none';
     videoElement.srcObject=remoteVideo;
 });
 socket.on('connect', function () {//once socket connection is established

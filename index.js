@@ -75,8 +75,7 @@ app.get('/register:videoId', function(req,res){//register route
     if (vallidID.includes(id)){
         res.render('register',{id: id});
     } else {
-        // res.redirect("/");
-        // res.render('wrong');//make a wrong file
+        res.render("notfound");
     } 
 });
 app.post('/register:videoId',function(req,res){//register post route
@@ -90,9 +89,7 @@ app.post('/register:videoId',function(req,res){//register post route
         console.log(pair.id);
         console.log(id);
         if (pair.id==id){
-            console.log(pair.id);
             correctPass=pair.password;
-            console.log(correctPass);
         }
     });
     console.log(correctPass);
@@ -112,12 +109,13 @@ app.post('/login',function(req,res){//login post route
         console.log(req.body);
         password=req.body.inputPassword;
         console.log(password);
-        res.redirect('/patrol?password='+password);
+        res.redirect('/patrol'+password);
 
 });
 // Patrol ----------------------------------------------------
 
-app.get('/patrol',function(req,res){//patrol route handle connection and video streaming
+app.get('/patrol:password',function(req,res){//patrol route handle connection and video streaming
+    password=req.params.password;
     var socketId={
         patrolId: null,
         watchId: null
@@ -219,7 +217,7 @@ app.post('/watch', function(req,res){
         res.redirect("/register"+id);
     } else {
         console.log("notFound");
-        // res.redirect("/");
+        res.render('notfound');
     }
 });
 

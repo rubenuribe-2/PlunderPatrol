@@ -7,11 +7,10 @@
 </div>
 <div class="options">
     <div>
-    <h6>Patrol ID:</h6>
+    <h4>your patrol ID:</h4>
     <h1><%= id %></h1>
+    <h5>Enter your patrol ID into the patrol ID field on another device to view your feed. Or follow the link below</h5>
     </div>  
-    <div id="qr-code">
-    </div>
     <a href="https://plunderpatroll.herokuapp.com/register<%= id %>" target="_blank">Click to view feed</a>
     <!-- <a href="http://localhost:3000/register<%= id %>" target="_blank">Click to view feed</a> -->
 </div>
@@ -28,7 +27,7 @@
 <script>
     id="<%=id%>"
     var qrcode = new QRCode("qr-code", {
-    text: "https://plunderpatroll.herokuapp.com/watch<%= id %>",
+    text: "https://plunderpatroll.herokuapp.com/register<%= id %>",
     width: 128,
     height: 128,
     colorDark : "#000000",

@@ -32,6 +32,11 @@
     /* background by SVGBackgrounds.com */
     min-height: calc(100vh - 127.45px);
 }
+@media only screen and (max-width: 990px){
+    .patrolsec{
+        min-height: calc(100vh - 127.45px);
+    }
+}
 @media only screen and (max-width: 600px){
     .patrolsec{
         flex-direction: column;
