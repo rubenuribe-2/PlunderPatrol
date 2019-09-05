@@ -11,13 +11,14 @@ const findOrCreate = require('mongoose-find-or-create');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+var password;
 var vallidID = [];
+var passpairs = [];
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
     extended:true
 }));
-
 // app.use(session({
 //     secret: process.env.SESSION_SECRET,
 //     resave: false,
@@ -68,22 +69,50 @@ app.get('/', function(req,res){//home route
 
 // register --------------------------------------------------
 
-app.get('/register', function(req,res){//register route
-    res.render('register');
+app.get('/register:videoId', function(req,res){//register route
+    var id=req.params.videoId;
+    console.log(id);
+    if (vallidID.includes(id)){
+        res.render('register',{id: id});
+    } else {
+        // res.redirect("/");
+        // res.render('wrong');//make a wrong file
+    } 
 });
-app.post('/register',function(req,res){//register post route
-
+app.post('/register:videoId',function(req,res){//register post route
+    id=req.params.videoId;
+    var inputPass=req.body.inputPassword;
+    console.log(inputPass);
+    var correctPass;
+    console.log(passpairs);
+    passpairs.forEach(function(pair){
+        console.log(pair);
+        console.log(pair.id);
+        console.log(id);
+        if (pair.id==id){
+            console.log(pair.id);
+            correctPass=pair.password;
+            console.log(correctPass);
+        }
+    });
+    console.log(correctPass);
+    if(correctPass==inputPass){
+        res.render('watch',{id:id,username:process.env.TURN_USERNAME,password:process.env.TURN_PASSWORD});
+    } else {
+        res.render('register',{id,id});
+    }
 });
 
 // Login -----------------------------------------------------
 
 app.get('/login', function(req,res){//login route
     res.render('login');
-    console.log("hi");
 });
 app.post('/login',function(req,res){//login post route
-    
-        res.redirect('/patrol');
+        console.log(req.body);
+        password=req.body.inputPassword;
+        console.log(password);
+        res.redirect('/patrol?password='+password);
 
 });
 // Patrol ----------------------------------------------------
@@ -93,21 +122,26 @@ app.get('/patrol',function(req,res){//patrol route handle connection and video s
         patrolId: null,
         watchId: null
     };
-    madeID=false
+    madeID=false;
     const Id=makeid(8);
-    while(!madeID){//makes unique Id
-        const Id=makeid(8);
-        if(vallidID.indexOf(Id)=== -1){
-            vallidID.push(Id);
-            madeID=true;
-        } else {
-            Id=makeid(8);
-        }
+    vallidID.push(Id);
+    // while(!madeID){//makes unique Id
+    //     const Id=makeid(8);
+    //     if(vallidID.indexOf(Id)=== -1){
+    //         vallidID.push(Id);
+    //         madeID=true;
+    //     } else {
+    //         Id=makeid(8);
+    //     }
+    // }
+    var idPass={
+        id: Id,
+        password: password,
     }
+    passpairs.push(idPass);
     const auth=true;
     if(auth){
         res.render('patrol',{id: Id,username:process.env.TURN_USERNAME,password:process.env.TURN_PASSWORD});
-
         patrol=io
         .of('/'+Id)
         .on('connection', function(socket){
@@ -175,13 +209,22 @@ app.get('/watch:videoId',function(req,res){
     
     res.render('watch',{id:videoId,username:process.env.TURN_USERNAME,password:process.env.TURN_PASSWORD});
 });
-
-
-// Guest -----------------------------------------------------
-
-app.get('/guest', function(req,res){//guest route
-    res.render('guest');
+app.post('/watch', function(req,res){
+    const id=req.body.patrolID;
+    console.log(id);
+    console.log(vallidID);
+    console.log(vallidID.includes(id));
+    if(vallidID.includes(id)){
+        console.log("found");
+        res.redirect("/register"+id);
+    } else {
+        console.log("notFound");
+        // res.redirect("/");
+    }
 });
+
+
+
   
 
 http.listen(process.env.PORT || 3000, function(err){

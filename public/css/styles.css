@@ -7,6 +7,7 @@ h1{
 /* body{
     margin-bottom: 50px;
 } */
+
 .first{
     background: #ff00cc;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to top, #333399, #ff00cc);  /* Chrome 10-25, Safari 5.1-6 */
@@ -76,6 +77,16 @@ h1{
     min-width: 100px;
     min-height: 50px;
     border-radius: 50ch;
+}
+.connect{
+    padding-left:0;
+    padding-right:0;
+    margin-right:0;
+    margin-left:0;
+    text-align:center;
+}
+.white{
+    color: #ffffff;
 }
 
 .big-sec{
