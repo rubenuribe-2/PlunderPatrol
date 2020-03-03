@@ -58,6 +58,8 @@ var video = document.getElementById("video");
             console.log(localStream);
             video.srcObject = stream;//attach the stream  to the video tag in patrol.ejs
             console.log(id);
+        }).catch((err) => {
+          console.log(err);
         });
   } else {
       //browser is outdated
