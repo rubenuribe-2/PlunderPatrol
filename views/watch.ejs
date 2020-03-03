@@ -20,13 +20,13 @@
     var socket = io('/'+getId);
     var pcConfig = { 
         iceServers: [{
-                        url: "turn:numb.viagenie.ca",
+                        urls: "turn:numb.viagenie.ca",
                         username: "<%=username%>",
                         credential: "<%=password%>"
                     },{
-                        url:"stun:numb.viagenie.ca"
+                        urls:"stun:numb.viagenie.ca"
                     }]
-};
+        };
 </script>
 <script src="js/watch.js"></script>
 
