@@ -1,6 +1,4 @@
-const watch = new RTCPeerConnection(pcConfig).catch((err)=>{
-    console.log(err);
-});
+const watch = new RTCPeerConnection(pcConfig);
 const button = document.getElementById("watch-button");
 const videoElement=document.getElementById("remote-video");
 var remoteVideo = new MediaStream();
