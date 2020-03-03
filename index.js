@@ -189,11 +189,13 @@ app.get('/patrol:password',function(req,res){//patrol route handle connection an
             socket.on('success',function(){
                 socket.to(socketId.watchId).emit('success');
             });
+            socket.on('patrolout',function(){
+                vallidID.splice(vallidID.indexOf(Id),1);
+            });
             socket.on('message', function () { });
 
 
             socket.on('disconnect', function () {
-                vallidID.splice(vallidID.indexOf(Id),1);
              });            
         });
 

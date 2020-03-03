@@ -68,7 +68,9 @@ var video = document.getElementById("video");
   }
 
 
-
+  window.addEventListener("beforeunload", function(e){
+    socket.emit('patrolout');
+ }, false);
 
   //exchange auth stuff with watch browser
   socket.on('connect', function () {
